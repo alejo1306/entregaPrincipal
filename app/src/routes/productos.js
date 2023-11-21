@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controlador/productController');
 
+
+//-------------------------------------------------------------------------------------
 router.get('/', async (req, res) => {
     try {
         const limit = req.query.limit;
@@ -17,6 +19,8 @@ router.get('/', async (req, res) => {
     }
 });
 
+
+//------------------------------------------------------------------------------------------
 router.get('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
@@ -33,6 +37,8 @@ router.get('/:pid', async (req, res) => {
     }
 });
 
+
+//------------------------------------------------------------------------------------------------------------
 router.post('/', async (req, res) => {
     try {
         const { title, description, code, price, stock, thumbnails, category } = req.body;
@@ -59,6 +65,8 @@ router.post('/', async (req, res) => {
     }
 });
 
+
+//---------------------------------------------------------------------------------------------------------------
 router.put('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
@@ -75,6 +83,8 @@ router.put('/:pid', async (req, res) => {
     }
 });
 
+
+//------------------------------------------------------------------------------------------------------------------------------
 router.delete('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);

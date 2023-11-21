@@ -3,11 +3,15 @@ const router = express.Router();
 const cartController = require('../controlador/cartController');
 const productController = require('../controlador/productController');
 
+
+//----------------------------------------------------------
 router.post('/', (req, res) => {
     const newCart = cartController.createCart();
     res.json(newCart);
 });
 
+
+//---------------------------------------------------------------------------------
 router.get('/:cid', (req, res) => {
     const cartId = parseInt(req.params.cid);
     const cart = cartController.getCartById(cartId);
@@ -19,6 +23,8 @@ router.get('/:cid', (req, res) => {
     res.json(cart.products);
 });
 
+
+//----------------------------------------------------------------------------------
 router.post('/:cid/product/:pid', (req, res) => {
     const cartId = parseInt(req.params.cid);
     const productId = parseInt(req.params.pid);

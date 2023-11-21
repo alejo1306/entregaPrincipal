@@ -2,11 +2,15 @@ const fs = require('fs');
 
 const cartsFile = 'carrito.json';
 
+
+//---------------------------------------------------------------------------------------
 const getCart = () => {
     const cartData = fs.readFileSync(cartsFile, 'utf-8');
     return JSON.parse(cartData);
 };
 
+
+//--------------------------------------------------------------------------------------
 const createCart = () => {
     const carts = getCart();
     const newCart = {
@@ -18,11 +22,15 @@ const createCart = () => {
     return newCart;
 };
 
+
+//----------------------------------------------------------------------------------
 const getCartById = (cartId) => {
     const carts = getCart();
     return carts.find(cart => cart.id === cartId);
 };
 
+
+//-----------------------------------------------------------------------------------------------
 const addProductToCart = (cartId, productId, quantity) => {
     const carts = getCart();
     const cartIndex = carts.findIndex(cart => cart.id === cartId);
