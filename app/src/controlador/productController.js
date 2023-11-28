@@ -1,51 +1,47 @@
-const fs = require('fs');
-
-const productsFile = 'productos.json';
-
-
-//--------------------------------------------------------------------
-const getProductsById = (productId) => {
-    const products = getProducts();
-    return products.find(product => product.id === productId);
-};
-
-//---------------------------------------------------------------------
-const getProducts = () => {
-    const productsData = fs.readFileSync(productsFile, 'utf-8');
-    return JSON.parse(productsData);
-};
-
-
-//-------------------------------------------------------------------------------------
-const addProduct = (product) => {
-    const products = getProducts();
-    product.id = products.length > 0 ? products[products.length - 1].id + 1 : 1;
-    products.push(product);
-    fs.writeFileSync(productsFile, JSON.stringify(products, null, 2), 'utf-8');
-};
-
-
-//---------------------------------------------------------------------------------------------
-const updateProduct = (productId, updatedFields) => {
-    const products = getProducts();
-    const index = products.findIndex(product => product.id === productId);
-    if (index !== -1) {
-        products[index] = { ...products[index], ...updatedFields };
-        fs.writeFileSync(productsFile, JSON.stringify(products, null, 2), 'utf-8');
+class ProductManager {
+    constructor() {
+        this.products = [];
     }
-};
 
+    getProducts() {
+        return this.products;
+    }
 
-//-----------------------------------------------------------------------------------------------
-const deleteProduct = (productId) => {
-    const products = getProducts().filter(product => product.id !== productId);
-    fs.writeFileSync(productsFile, JSON.stringify(products, null, 2), 'utf-8');
-};
+    getProductsById(id) {
+        return this.products.find(product => product.id === id);
+    }
 
-module.exports = {
-    getProducts,
-    addProduct,
-    updateProduct,
-    deleteProduct,
-    getProductsById
-};
+    addProduct(product) {
+        const { title, description, price, thumbnail, code, stock } = product;
+
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            return console.log("Todos los campos son obligatorios");
+        }
+
+        if (this.products.some(existingProduct => existingProduct.code === code)) {
+            return console.log("El código de producto ya existe");
+        }
+
+        if (this.products.length > 0) {
+            const lastProduct = this.products[this.products.length - 1];
+            product.id = lastProduct.id + 1;
+        } else {
+            product.id = 1;
+        }
+
+        this.products.push(product);
+    }
+}
+
+class Product {
+    constructor(title, description, price, thumbnail, code, stock) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.thumbnail = thumbnail;
+        this.code = code;
+        this.stock = stock;
+    }
+}
+
+module.exports = { ProductManager, Product };

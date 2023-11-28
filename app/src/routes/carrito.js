@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const cartController = require('../controlador/cartController');
-const productController = require('../controlador/productController');
+const { ProductManager } = require('../controlador/productController');
 
+const productManager = new ProductManager();
 
-//----------------------------------------------------------
+//---------------------------------------------------------------------------------------------
 router.post('/', (req, res) => {
-    const newCart = cartController.createCart();
+    const newCart = productManager.createCart();
     res.json(newCart);
 });
 
 
-//---------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 router.get('/:cid', (req, res) => {
     const cartId = parseInt(req.params.cid);
-    const cart = cartController.getCartById(cartId);
+    const cart = productManager.getCartById(cartId);
 
     if (!cart) {
         return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -24,7 +24,7 @@ router.get('/:cid', (req, res) => {
 });
 
 
-//----------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
 router.post('/:cid/product/:pid', (req, res) => {
     const cartId = parseInt(req.params.cid);
     const productId = parseInt(req.params.pid);
@@ -34,7 +34,7 @@ router.post('/:cid/product/:pid', (req, res) => {
         return res.status(400).json({ error: 'ID de carrito, ID de producto o cantidad inválidos' });
     }
 
-    const cart = cartController.addProductToCart(cartId, productId, quantity);
+    const cart = productManager.addProductToCart(cartId, productId, quantity);
 
     if (!cart) {
         return res.status(404).json({ error: 'Carrito no encontrado' });
