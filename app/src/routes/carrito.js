@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { ProductManager } = require('../controlador/productController');
+import { CartManager } from '../controlador/cartController.js'
 
-const productManager = new ProductManager();
+const cartManager = new CartManager("./cart.json");
 
 //---------------------------------------------------------------------------------------------
 router.post('/', (req, res) => {
-    const newCart = productManager.createCart();
+    const newCart = cartManager.createCart();
     res.json(newCart);
 });
 
@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
 //-----------------------------------------------------------------------------------------------
 router.get('/:cid', (req, res) => {
     const cartId = parseInt(req.params.cid);
-    const cart = productManager.getCartById(cartId);
+    const cart = cartManager.getCartById(cartId);
 
     if (!cart) {
         return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -34,7 +34,7 @@ router.post('/:cid/product/:pid', (req, res) => {
         return res.status(400).json({ error: 'ID de carrito, ID de producto o cantidad inválidos' });
     }
 
-    const cart = productManager.addProductToCart(cartId, productId, quantity);
+    const cart = cartManager.addProductToCart(cartId, productId, quantity);
 
     if (!cart) {
         return res.status(404).json({ error: 'Carrito no encontrado' });
@@ -43,4 +43,5 @@ router.post('/:cid/product/:pid', (req, res) => {
     res.json(cart);
 });
 
-module.exports = router;
+
+export default router

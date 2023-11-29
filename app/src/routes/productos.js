@@ -1,13 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { ProductManager, Product } = require('../controlador/productController');
+import { ProductManager, Product } from '../controlador/productController.js'
 
-const productManager = new ProductManager();
+const productManager = new ProductManager('./product.json');
 
 router.get('/', async (req, res) => {
     try {
         const limit = req.query.limit;
-        let products = productManager.getProducts();
+        let products = await productManager.getProducts();
 
         if (limit) {
             products = products.slice(0, parseInt(limit));
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 router.get('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
-        const product = productManager.getProductsById(productId);
+        const product = await productManager.getProductsById(productId);
 
         if (!product) {
             return res.status(404).json({ success: false, error: 'Producto no encontrado' });
@@ -45,9 +45,10 @@ router.post('/', async (req, res) => {
 
         const product = new Product(title, description, price, thumbnails[0] || '', code, stock);
 
-        productManager.addProduct(product);
+        await productManager.addProduct(product);
         res.json({ success: true, data: product });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
     }
 });
@@ -61,7 +62,7 @@ router.put('/:pid', async (req, res) => {
             return res.status(400).json({ success: false, error: 'ID de producto inválido' });
         }
 
-        productManager.updateProduct(productId, updatedFields);
+        await productManager.updateProduct(productId, updatedFields);
         res.json({ success: true, message: 'Producto actualizado correctamente' });
     } catch (error) {
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
@@ -76,11 +77,11 @@ router.delete('/:pid', async (req, res) => {
             return res.status(400).json({ success: false, error: 'ID de producto inválido' });
         }
 
-        productManager.deleteProduct(productId);
+        await productManager.deleteProduct(productId);
         res.json({ success: true, message: 'Producto eliminado correctamente' });
     } catch (error) {
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
     }
 });
 
-module.exports = router;
+export default router
