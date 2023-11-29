@@ -3,7 +3,7 @@ const router = express.Router();
 import { ProductManager, Product } from '../controlador/productController.js'
 
 const productManager = new ProductManager('./product.json');
-
+//--------------------------------------------------------------------------------------------------------------------
 router.get('/', async (req, res) => {
     try {
         const limit = req.query.limit;
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
     }
 });
-
+//----------------------------------------------------------------------------------------------------------------------
 router.get('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
@@ -34,7 +34,7 @@ router.get('/:pid', async (req, res) => {
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
     }
 });
-
+//------------------------------------------------------------------------------------------------------------------------------
 router.post('/', async (req, res) => {
     try {
         const { title, description, code, price, stock, thumbnails, category } = req.body;
@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
     }
 });
-
+//------------------------------------------------------------------------------------------------------------------------------------
 router.put('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
@@ -68,7 +68,7 @@ router.put('/:pid', async (req, res) => {
         res.status(500).json({ success: false, error: 'Error interno del servidor' });
     }
 });
-
+//-----------------------------------------------------------------------------------------------------------------------------------
 router.delete('/:pid', async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);

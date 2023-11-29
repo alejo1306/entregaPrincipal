@@ -15,7 +15,7 @@ export class ProductManager {
 
         }
     }
-
+    //------------------------------------------------------------------------------------------
     async getProducts() {
         try {
             return this.products;
@@ -24,7 +24,7 @@ export class ProductManager {
         }
 
     }
-
+    //----------------------------------------------------------------------------------------------
     async getProductsById(id) {
         try {
             const products = await this.getProducts()
@@ -34,7 +34,7 @@ export class ProductManager {
         }
 
     }
-
+    //-------------------------------------------------------------------------------------------------
     async addProduct(product) {
         try {
             const { title, description, price, thumbnail, code, stock } = product;
@@ -65,7 +65,7 @@ export class ProductManager {
 
     }
 }
-
+//--------------------------------------------------------------------------------------------
 export class Product {
     constructor(title, description, price, thumbnail, code, stock) {
         this.title = title;
